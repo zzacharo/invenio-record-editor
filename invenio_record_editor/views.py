@@ -31,6 +31,7 @@ from flask import Blueprint, render_template
 blueprint = Blueprint(
     'invenio_record_editor',
     __name__,
+    url_prefix='/editor',
     template_folder='templates',
     static_folder='static',
 )
@@ -40,5 +41,4 @@ blueprint = Blueprint(
 def index():
     """Basic view."""
     return render_template(
-        "invenio_record_editor/index.html",
-        module_name='Invenio-RecordEditor')
+        "invenio_record_editor/index.html")
