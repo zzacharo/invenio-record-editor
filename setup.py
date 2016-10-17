@@ -54,12 +54,12 @@ for reqs in extras_require.values():
     extras_require['all'].extend(reqs)
 
 setup_requires = [
-    'Babel>=1.3',
     'pytest-runner>=2.6.2',
 ]
 
 install_requires = [
-    'Flask-BabelEx>=0.9.2',
+    'Flask>=0.11.1',
+    'invenio-assets>=1.0.0b3',
 ]
 
 packages = find_packages()
@@ -87,7 +87,7 @@ setup(
     platforms='any',
     entry_points={
         'invenio_base.apps': [
-            'invenio_record_editor = invenio_record_editor:InvenioRecordEditor',
+            'invenio_record_editor = invenio_record_editor:InvenioRecordEditor'
         ],
         'invenio_i18n.translations': [
             'messages = invenio_record_editor',
@@ -95,7 +95,9 @@ setup(
         # TODO: Edit these entry points to fit your needs.
         # 'invenio_access.actions': [],
         # 'invenio_admin.actions': [],
-        # 'invenio_assets.bundles': [],
+        'invenio_assets.bundles': [
+            'invenio_record_editor_js = invenio_record_editor.bundles:js'
+        ],
         # 'invenio_base.api_apps': [],
         # 'invenio_base.api_blueprints': [],
         # 'invenio_base.blueprints': [],
