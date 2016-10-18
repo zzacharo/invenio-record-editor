@@ -24,12 +24,14 @@
 {%- extends config.RECORDEDITOR_BASE_TEMPLATE -%}
 
 {%- block page_body %}
-<div class="container-fluid">
-  <re-app>
-    Loading...
-  </re-app>
-</div>
+<re-app>
+  Loading...
+</re-app>
 {% endblock page_body %}
+
+
+{%- block page_footer %}
+{%- endblock page_footer %}
 
 {% block javascript %}
 {% assets "invenio_record_editor_js" %}
