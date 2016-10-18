@@ -51,6 +51,7 @@ def db(app):
 
 @pytest.fixture(scope='session')
 def generate_data(app, db):
+    
     schema = {
         "$schema": "http://json-schema.org/schema#",
         "description": "Sample schema for testing",
