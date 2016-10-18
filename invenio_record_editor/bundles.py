@@ -22,29 +22,18 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+"""Bundle definition for record editor."""
 
-"""Test example app."""
+from __future__ import absolute_import, division, print_function
 
-import os
-import signal
-import subprocess
-import sys
-import time
+from invenio_assets import NpmBundle
 
-
-def setup_module(module):
-    """Set up before all tests."""
-    # switch to examples/app.py
-    exampleappdir = os.path.join(os.path.split(sys.path[0])[0],
-                                 'examples')
-    os.chdir(exampleappdir)
-
-
-def teardown_module(module):
-    """Tear down after all tests."""
-    pass
-
-
-def test_example_app():
-    """Test example app."""
-    pass
+js = NpmBundle(
+    "node_modules/record-editor/dist/inline.js",
+    "node_modules/record-editor/dist/*.bundle.js",
+    depends=("node_modules/record-editor/dist/*.js"),
+    output="gen/record-editor.%(version)s.js",
+    npm={
+        "record-editor": "latest"
+    }
+)

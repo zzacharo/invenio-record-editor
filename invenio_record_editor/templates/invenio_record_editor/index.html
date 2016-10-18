@@ -21,11 +21,18 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 #}
-
-{%- extends config.RECORDEDITOR_BASE_TEMPLATE %}
+{%- extends config.RECORDEDITOR_BASE_TEMPLATE -%}
 
 {%- block page_body %}
-TODO: Example template, please remove if you do not need it.
-{{_('Welcome to %(module_name)s', module_name=module_name)}}
-{%- endblock %}
+<div class="container-fluid">
+  <re-app>
+    Loading...
+  </re-app>
+</div>
+{% endblock page_body %}
 
+{% block javascript %}
+{% assets "invenio_record_editor_js" %}
+  <script src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock javascript %}

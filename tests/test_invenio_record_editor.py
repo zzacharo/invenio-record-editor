@@ -28,8 +28,8 @@
 from __future__ import absolute_import, print_function
 
 from flask import Flask
-from flask_babelex import Babel
 
+from invenio_assets import InvenioAssets
 from invenio_record_editor import InvenioRecordEditor
 
 
@@ -54,9 +54,8 @@ def test_init():
 
 def test_view(app):
     """Test view."""
-    Babel(app)
     InvenioRecordEditor(app)
+    InvenioAssets(app)
     with app.test_client() as client:
-        res = client.get("/")
+        res = client.get("/editor/")
         assert res.status_code == 200
-        assert 'Welcome to Invenio-RecordEditor' in str(res.data)

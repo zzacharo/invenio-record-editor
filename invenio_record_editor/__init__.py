@@ -25,7 +25,6 @@
 """Invenio module for editing JSON records."""
 
 from __future__ import absolute_import, print_function
-
 from .ext import InvenioRecordEditor
 from .version import __version__
 

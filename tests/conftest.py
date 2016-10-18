@@ -26,16 +26,40 @@
 """Pytest configuration."""
 
 from __future__ import absolute_import, print_function
-
-import pytest
 from flask import Flask
+import pytest
+import os
+import tempfile
+import shutil
+from invenio_pidstore import InvenioPIDStore
+from invenio_record_editor import InvenioRecordEditor
+from invenio_db import InvenioDB
+from invenio_records import InvenioRecords
+from invenio_indexer import InvenioIndexer
+from invenio_search import InvenioSearch
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def app():
     """Flask application fixture."""
-    app = Flask('testapp')
+    instance_path = tempfile.mkdtemp()
+    app = Flask(__name__, instance_path=instance_path)
     app.config.update(
         TESTING=True
     )
-    return app
+    InvenioRecordEditor(app)
+    InvenioPIDStore(app)
+    InvenioDB(app)
+    InvenioRecords(app)
+    InvenioIndexer(app)
+    InvenioSearch(app)
+    with app.app_context():
+        yield app
+        shutil.rmtree(instance_path)
+
+        
+@pytest.fixture(scope="session")
+def app_client(app):
+    """Flask test client for app."""
+    with app.test_client() as client:
+        yield client
