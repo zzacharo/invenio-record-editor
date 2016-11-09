@@ -26,6 +26,7 @@
 
 from __future__ import absolute_import, print_function
 
+from . import config
 from .views import blueprint
 
 
@@ -46,6 +47,9 @@ class InvenioRecordEditor(object):
     def init_config(self, app):
         """Initialize configuration."""
         app.config.setdefault(
-            "RECORDEDITOR_BASE_TEMPLATE",
+            "RECORD_EDITOR_BASE_TEMPLATE",
             app.config.get("BASE_TEMPLATE",
                            "invenio_record_editor/base.html"))
+        for k in dir(config):
+            if k.startswith('RECORD_EDITOR_'):
+                app.config.setdefault(k, getattr(config, k))

@@ -1,4 +1,5 @@
-{#
+# -*- coding: utf-8 -*-
+#
 # This file is part of Invenio.
 # Copyright (C) 2016 CERN.
 #
@@ -20,24 +21,7 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-#}
-{%- extends config.RECORD_EDITOR_BASE_TEMPLATE -%}
 
-{%- block page_body %}
-<re-app>
-	Loading...
-</re-app>
+"""Invenio module for editing JSON records."""
 
-{% endblock page_body %}
-
-
-{%- block page_footer %}
-{%- endblock page_footer %}
- 
-{% block javascript %}
-
-{% assets "invenio_record_editor_js" %}
-  <script src="{{ ASSET_URL }}"></script>
-{% endassets %}
-
-{% endblock javascript %}
+RECORD_EDITOR_INDEX_TEMPLATE = 'invenio_record_editor/index.html'
