@@ -37,7 +37,8 @@ blueprint = Blueprint(
 )
 
 
-@blueprint.route("/")
-def index():
+@blueprint.route('/', defaults={'path': ''})
+@blueprint.route('/<path:path>')
+def index(path):
     """Basic view."""
     return render_template(current_app.config['RECORD_EDITOR_INDEX_TEMPLATE'])
