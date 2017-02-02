@@ -99,7 +99,9 @@ setup(
             'invenio_record_editor_js = invenio_record_editor.bundles:js'
         ],
         # 'invenio_base.api_apps': [],
-        # 'invenio_base.api_blueprints': [],
+        'invenio_base.api_blueprints': [
+            'invenio_record_editor = invenio_record_editor.views:api_blueprint'
+        ],
         # 'invenio_base.blueprints': [],
         # 'invenio_celery.tasks': [],
         # 'invenio_db.models': [],
