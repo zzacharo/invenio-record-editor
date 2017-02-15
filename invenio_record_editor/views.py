@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
 # Copyright (C) 2016 CERN.
@@ -56,7 +55,7 @@ def index(path):
 def validate():
     """Validate incoming document against validator functions."""
     data = request.get_json()
-    validator_fns = current_app.config['RECORD_EDITOR_VALIDATOR_FUNCTIONS']
+    validator_fns = current_app.config['RECORD_EDITOR_VALIDATOR_FNS']
     if validator_fns:
         record_validator = RecordValidator(
             record=data,

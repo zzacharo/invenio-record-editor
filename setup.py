@@ -60,6 +60,8 @@ setup_requires = [
 install_requires = [
     'Flask>=0.11.1',
     'invenio-assets>=1.0.0b3',
+    'idutils>=0.2.1',
+    'requests'
 ]
 
 packages = find_packages()
@@ -98,7 +100,9 @@ setup(
         'invenio_assets.bundles': [
             'invenio_record_editor_js = invenio_record_editor.bundles:js'
         ],
-        # 'invenio_base.api_apps': [],
+        'invenio_base.api_apps': [
+            'invenio_record_editor = invenio_record_editor:InvenioRecordEditor'
+        ],
         'invenio_base.api_blueprints': [
             'invenio_record_editor = invenio_record_editor.views:api_blueprint'
         ],

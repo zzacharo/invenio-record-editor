@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
 # Copyright (C) 2017 CERN.
@@ -25,7 +24,7 @@
 """Utils for Invenio Record Editor."""
 
 from collections import defaultdict
-
+from .contrib.validators.errors import ValidationError
 import six
 
 
@@ -61,6 +60,8 @@ class RecordValidator(object):
     def validate(self):
         """Run self.validator_fns and accumulate errors in self.errors."""
         for fn in self.validator_fns:
-            errors = fn(self.record)
-            for key, error in six.iteritems(errors):
-                self.errors[key].extend(error)
+            try:
+                fn(self.record)
+            except ValidationError as e:
+                for key, error in six.iteritems(e.error):
+                    self.errors[key].extend(error)
