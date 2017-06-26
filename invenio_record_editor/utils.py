@@ -24,8 +24,6 @@
 """Utils for Invenio Record Editor."""
 
 from collections import defaultdict
-from .contrib.validators.errors import ValidationError
-import six
 
 
 class RecordValidator(object):
@@ -52,16 +50,36 @@ class RecordValidator(object):
         :raises TypeError: If there are unknown arguments passed to constructor
         """
         self.record = kwargs.pop('record', {})
-        self.validator_fns = kwargs.pop('validator_fns', [])
+        self.schema = {
+            '$ref': self.record.get('$schema', ''),
+        }
+        self.validator = kwargs.pop('validator', None)
+        resolver = kwargs.pop('resolver', None)
+
+        if resolver is not None:
+            self.resolver = resolver.from_schema(self.schema)
+        else:
+            self.resolver = None
+
         if kwargs:
             raise TypeError('Unexpected **kwargs: %r' % kwargs)
         self.errors = defaultdict(list)
 
     def validate(self):
         """Run self.validator_fns and accumulate errors in self.errors."""
-        for fn in self.validator_fns:
-            try:
-                fn(self.record)
-            except ValidationError as e:
-                for key, error in six.iteritems(e.error):
-                    self.errors[key].extend(error)
+
+        def format_error(_error):
+            return [{
+                'message': _error.message,
+                'type': _error.cause or 'Error'
+            }]
+
+        if self.validator is not None:
+            validator_instance = self.validator(self.schema, resolver=self.resolver)
+            errors = [e for e in validator_instance.iter_errors(self.record)]
+            for error in errors:
+                path = '/' + '/'.join(str(el) for el in error.path)
+                if path != '/':
+                    self.errors[path].extend(format_error(error))
+                else:
+                    self.errors['globalErrors'].extend(format_error(error))

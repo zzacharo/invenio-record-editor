@@ -27,89 +27,35 @@
 
 from __future__ import absolute_import, print_function
 
-from helpers import multiple_error_check, other_simple_check, simple_check
 from invenio_record_editor.utils import RecordValidator
 
+from helpers import MockValidator
 
-def test_record_validator_with_simple_check():
+
+def test_record_validator_with_mock_validator():
     record = {
-        "hello": "world"
+        "key": "value"
     }
+
     expected = {
-        "hello": [{
-            'message': 'Hello should not be equal to world',
-            'type': 'warning'
-        }]
+        "globalErrors": [{
+            'message': 'Error on a route path.',
+            'type': 'Error'
+        }],
+        "/path/to/field": [{
+            'message': 'Error on a field path.',
+            'type': 'Error'
+         }, {
+            'message': 'Warning on a field path.',
+            'type': 'Warning'
+         }]
     }
+
     record_validator = RecordValidator(
         record=record,
-        validator_fns=[simple_check]
+        validator=MockValidator,
+        resolver=None
     )
-    record_validator.validate()
-    assert expected == dict(record_validator.errors)
 
-
-def test_record_validator_with_multiple_checks_in_same_field():
-    record = {
-        "hello": "world"
-    }
-    expected = {
-        "hello": [
-            {
-                'message': 'Hello should not be equal to world',
-                'type': 'warning'
-            },
-            {
-                'message': 'Hello and world are not compatible',
-                'type': 'error'
-            }
-        ]
-    }
-    record_validator = RecordValidator(
-        record=record,
-        validator_fns=[simple_check, other_simple_check]
-    )
-    record_validator.validate()
-    assert expected == dict(record_validator.errors)
-
-
-def test_record_validator_with_checks_that_return_multiple_errors_in_key():
-    record = {
-        "hello": "world"
-    }
-    expected = {
-        "hello": [
-            {
-                'message': 'Hello should not be equal to world',
-                'type': 'warning'
-            },
-            {
-                'message': 'Hello and world are not compatible',
-                'type': 'error'
-            },
-            {
-                'message': 'This field also contains a warning',
-                'type': 'warning'
-            }
-
-        ]
-    }
-    record_validator = RecordValidator(
-        record=record,
-        validator_fns=[simple_check, multiple_error_check]
-    )
-    record_validator.validate()
-    assert expected == dict(record_validator.errors)
-
-
-def test_record_validator_with_no_errors():
-    record = {
-        "hello": "universe"
-    }
-    expected = {}
-    record_validator = RecordValidator(
-        record=record,
-        validator_fns=[simple_check, other_simple_check]
-    )
     record_validator.validate()
     assert expected == dict(record_validator.errors)

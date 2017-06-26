@@ -26,7 +26,6 @@
 from __future__ import absolute_import, print_function
 
 from flask import Blueprint, current_app, jsonify, render_template, request
-
 from .utils import RecordValidator
 
 api_blueprint = Blueprint(
@@ -55,11 +54,13 @@ def index(path):
 def validate():
     """Validate incoming document against validator functions."""
     data = request.get_json()
-    validator_fns = current_app.config['RECORD_EDITOR_VALIDATOR_FNS']
-    if validator_fns:
+    validator = current_app.config['RECORD_EDITOR_VALIDATOR']
+    resolver = current_app.config['RECORD_EDITOR_SCHEMA_RESOLVER']
+    if validator:
         record_validator = RecordValidator(
             record=data,
-            validator_fns=validator_fns
+            validator=validator,
+            resolver=resolver
         )
         record_validator.validate()
         return jsonify(record_validator.errors)

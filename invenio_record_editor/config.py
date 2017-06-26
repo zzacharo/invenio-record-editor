@@ -22,51 +22,12 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 """Invenio module for editing JSON records."""
-from .contrib.validators.rules import check_for_author_or_corporate_author_to_exist,\
-    check_document_type_if_book_series_exist, check_document_type_if_isbns_exist,\
-    check_document_type_if_cnum_exist, check_document_type_if_thesis_info_exist,\
-    check_affiliations_if_authors_exist, check_thesis_info_if_doctype_value_thesis_present, \
-    check_cnum_if_doctype_value_proceedings_present, check_accelerator_experiments_if_collaborations_exist,\
-    check_cnum_if_doctype_value_conference_paper_present, check_doctype_values_if_cnum_present,\
-    check_if_isbn_exist_in_other_records, check_if_isbn_is_valid, check_external_urls_if_work,\
-    check_accelerator_experiments_for_experiment, check_external_dois_if_exist,\
-    check_if_reportnumber_exist_in_other_records, check_if_2_cnum_exist_in_publication_info,\
-    check_date_present_in_record, check_if_no_pages_for_publication_info, check_if_journal_title_is_canonical
 
 RECORD_EDITOR_INDEX_TEMPLATE = 'invenio_record_editor/index.html'
 
-RECORD_EDITOR_VALIDATOR_FNS = [
-    check_for_author_or_corporate_author_to_exist,
-    check_document_type_if_book_series_exist,
-    check_document_type_if_isbns_exist,
-    check_document_type_if_cnum_exist,
-    check_document_type_if_thesis_info_exist,
-    check_affiliations_if_authors_exist,
-    check_thesis_info_if_doctype_value_thesis_present,
-    check_cnum_if_doctype_value_proceedings_present,
-    check_cnum_if_doctype_value_conference_paper_present,
-    check_doctype_values_if_cnum_present,
-    check_accelerator_experiments_if_collaborations_exist,
-    check_if_isbn_exist_in_other_records,
-    check_if_isbn_is_valid,
-    check_external_urls_if_work,
-    check_accelerator_experiments_for_experiment,
-    check_external_dois_if_exist,
-    check_if_reportnumber_exist_in_other_records,
-    check_if_2_cnum_exist_in_publication_info,
-    check_date_present_in_record,
-    check_if_no_pages_for_publication_info,
-    check_if_journal_title_is_canonical
-]
+"""A :class:`jsonschema.IValidator` class used for record validation."""
+RECORD_EDITOR_VALIDATOR = None
 
-"""List of validator functions.
-
-NOTE: Each function in validator_fns should have one input parameter
-(the record dictionary) and should return a dictionary with the format:
-{
-    'path.in.dotted.notation': [{
-        'message': 'Error/Warning message to be displayed',
-        'type': <error|warning>
-    }]
-}
-"""
+"""A :class:`jsonschema.RefResolver` class used as a schema resolver from
+   :class:`jsonschema.IValidator`."""
+RECORD_EDITOR_SCHEMA_RESOLVER = None

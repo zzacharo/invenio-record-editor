@@ -22,45 +22,36 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+from __future__ import absolute_import, print_function
 
-"""Test helpers."""
-
-
-def simple_check(data):
-    """A check that returns a warning."""
-    errors = {}
-    if data.get('hello', '') == 'world':
-        errors['hello'] = [{
-            'message': 'Hello should not be equal to world',
-            'type': 'warning'
-        }]
-    return errors
+from collections import deque
 
 
-def other_simple_check(data):
-    """A check that returns an error."""
-    errors = {}
-    if data.get('hello', '') == 'world':
-        errors['hello'] = [{
-            'message': 'Hello and world are not compatible',
-            'type': 'error'
-        }]
-    return errors
+class MockValidator(object):
 
+    def __init__(self, *args, **kwargs):
+        pass
 
-def multiple_error_check(data):
-    """A check that returns an error and a warning."""
-    errors = {}
-    if data.get('hello', '') == 'world':
-        errors['hello'] = [
-            {
-                'message': 'Hello and world are not compatible',
-                'type': 'error'
-            },
-            {
-                'message': 'This field also contains a warning',
-                'type': 'warning'
-            }
-
+    @staticmethod
+    def iter_errors(*args, **kwargs):
+        return [
+            ValidationError(path=deque(['']),
+                            message='Error on a route path.',
+                            cause='Error'
+                            ),
+            ValidationError(path=deque(['path/to/field']),
+                            message='Error on a field path.',
+                            cause='Error'
+                            ),
+            ValidationError(path=deque(['path/to/field']),
+                            message='Warning on a field path.',
+                            cause='Warning'
+                            ),
         ]
-    return errors
+
+
+class ValidationError(object):
+    def __init__(self, path, message, cause):
+        self.path = path
+        self.message = message
+        self.cause = cause

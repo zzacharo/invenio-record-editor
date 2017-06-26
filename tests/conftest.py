@@ -33,17 +33,34 @@ from flask import Flask
 from invenio_assets import InvenioAssets
 from invenio_record_editor import InvenioRecordEditor
 from invenio_record_editor.views import api_blueprint
+from inspirehep.modules.records.validators.validator import InspireValidator, InspireResolver
+from invenio_records import InvenioRecords
+from invenio_jsonschemas import InvenioJSONSchemas
 
 
 @pytest.fixture(scope='session')
 def app():
     """Flask application fixture."""
     app = Flask('testapp')
+
+
     app.config.update(
         TESTING=True
     )
+    app.config.update(
+        JSONSCHEMAS_ENDPOINT='/localhost:5000'
+    )
+    app.config.update(
+        RECORD_EDITOR_VALIDATORS=[InspireValidator],
+    )
+    app.config.update(
+        RECORD_EDITOR_SCHEMA_RESOLVER=InspireResolver
+    )
     InvenioRecordEditor(app)
     InvenioAssets(app)
+    InvenioRecords(app)
+    InvenioJSONSchemas(app)
+
     # For testing API views
     app.register_blueprint(api_blueprint)
     return app
